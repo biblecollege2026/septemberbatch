@@ -757,18 +757,19 @@
         </div>
 
         <!-- NEW ADMIN DASHBOARD SECTION -->
-<div id="admin-security-section" style="display:none; text-align:center; margin: 20px 0; padding: 20px; background: #f0f4f8; border-radius: 10px;">
-    <h4 style="color: #1e3c72; margin-bottom: 15px;">🛡️ Security Command Center</h4>
-    <div style="display: flex; justify-content: center; gap: 15px;">
-        <button id="viewStudentsBtn" onclick="ActivityLogger.ui.toggleStudents()" style="width:auto; background:#1e3c72;">
+<div id="admin-security-section" style="display:none; text-align:center; margin: 20px 0; padding: 20px; background: #f0f4f8; border-radius: 10px; border: 2px solid #1e3c72;">
+    <h4 style="color: #1e3c72; margin-bottom: 15px;">🛡️ September Batch Security Command</h4>
+    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+        <button id="viewStudentsBtn" onclick="ActivityLogger.ui.toggleStudents()" style="width:auto; background:#1e3c72; padding: 10px 20px;">
             👥 View Online Students
         </button>
-        <button onclick="ActivityLogger.ui.togglePanel()" style="width:auto; background:#28a745;">
+        <button onclick="ActivityLogger.ui.togglePanel()" style="width:auto; background:#28a745; padding: 10px 20px;">
             📊 Full Security Dashboard
         </button>
     </div>
+    
+    <div id="admin-students-toggle-div" style="margin-top: 20px; text-align: left; background: white; border-radius: 8px; overflow: hidden;"></div>
 </div>
-
 <div id="student-directory-wrapper" style="display:none; margin: 20px auto; max-width: 800px;">
     <div id="admin-students-toggle-div"></div>
 </div>
@@ -887,64 +888,64 @@
         }
 
         function verifyAccess() {
-            const emailInput = document.getElementById('studentEmail');
-            const errorMsg = document.getElementById('errorMsg');
-            const successMsg = document.getElementById('successMsg');
+        const emailInput = document.getElementById('studentEmail');
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        const email = emailInput.value.trim().toLowerCase();
 
-            const email = emailInput.value.trim().toLowerCase();
+        errorMsg.style.display = 'none';
+        successMsg.style.display = 'none';
 
-            // Hide messages
-            errorMsg.style.display = 'none';
-            successMsg.style.display = 'none';
-
-            // Validation
-            if (!email) {
-                errorMsg.textContent = '⚠️ Please enter your email address';
-                errorMsg.style.display = 'block';
-                return;
-            }
-
-            if (!email.includes('@') || !email.includes('.')) {
-                errorMsg.textContent = '⚠️ Please enter a valid email address';
-                errorMsg.style.display = 'block';
-                return;
-            }
-
-            // Check whitelist
-            if (ALLOWED_EMAILS[email]) {
-                window.studentEmail = email; // Assign to global window.studentEmail
-                window.studentName = ALLOWED_EMAILS[email]; // Assign to global window.studentName
-                successMsg.textContent = '✅ Access granted! Loading materials...';
-                successMsg.style.display = 'block';
-                
-                setTimeout(() => {
-                    window.hideAllContentSections(); // Hide all sections first
-
-                    if (email === 'jlibiblecollege@gmail.com') {
-                        document.getElementById('adminLoggedEmail').textContent = window.studentName;
-                        if (typeof window.showAdminDashboard === 'function') {
-                            window.showAdminDashboard();
-                        } else {
-                            console.error("showAdminDashboard is not defined. Make sure additional-features.js is loaded correctly.");
-                            document.getElementById('adminDashboard').style.display = 'block'; // Fallback
-                            document.getElementById('studentList').innerHTML = '<p>Error loading student list. Check console.</p>';
-                        }
-                    } else {
-                        document.getElementById('loggedEmail').textContent = window.studentName + ' (' + email + ')';
-                        document.getElementById('pdfSelection').style.display = 'block';
-                        // NEW: Call the function to add buttons for the student
-                        if (typeof window.addAdditionalButtons === 'function') { // Check if function exists
-                            window.addAdditionalButtons();
-                        } else {
-                            console.error("addAdditionalButtons is not defined. Make sure additional-features.js is loaded correctly.");
-                        }
-                    }
-                }, 1000);
-            } else {
-                errorMsg.textContent = '❌ Access Denied: Your email is not registered. Please contact the administrator.';
-                errorMsg.style.display = 'block';
-            }
+        if (!email) {
+            errorMsg.textContent = '⚠️ Please enter your email address';
+            errorMsg.style.display = 'block';
+            return;
         }
+
+        if (ALLOWED_EMAILS[email]) {
+            // 1. SET IDENTITY GLOBALLY
+            window.studentEmail = email; 
+            window.studentName = ALLOWED_EMAILS[email]; 
+
+            // 2. SYNC LOGGER IMMEDIATELY (Fixes the "Unknown" issue)
+            if (typeof ActivityLogger !== 'undefined') {
+                ActivityLogger.CONFIG.STUDENT_EMAIL = window.studentEmail;
+                ActivityLogger.CONFIG.STUDENT_NAME = window.studentName;
+                ActivityLogger.init(); 
+            }
+
+            successMsg.textContent = '✅ Access granted! Loading...';
+            successMsg.style.display = 'block';
+            
+            setTimeout(() => {
+                window.hideAllContentSections();
+
+                if (email === 'jlibiblecollege@gmail.com') {
+                    // ADMIN SPECIFIC LOGIC
+                    document.getElementById('adminLoggedEmail').textContent = window.studentName;
+                    
+                    // SHOW THE SECURITY COMMAND BUTTONS
+                    const securitySection = document.getElementById('admin-security-section');
+                    if(securitySection) securitySection.style.display = 'block';
+
+                    if (typeof window.showAdminDashboard === 'function') {
+                        window.showAdminDashboard();
+                    }
+                } else {
+                    // STUDENT LOGIC
+                    document.getElementById('loggedEmail').textContent = window.studentName;
+                    document.getElementById('pdfSelection').style.display = 'block';
+                    
+                    if (typeof window.addAdditionalButtons === 'function') {
+                        window.addAdditionalButtons();
+                    }
+                }
+            }, 1000);
+        } else {
+            errorMsg.textContent = '❌ Access Denied: Email not registered.';
+            errorMsg.style.display = 'block';
+        }
+    }
 
         function logout() {
             window.studentEmail = '';
