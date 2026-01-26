@@ -17,7 +17,7 @@ const ActivityLogger = {
             }
 
             // Log activity now that identity is known
-            this.logActivity('Portal Accessed', 'Dashboard');
+            this.logActivity('Portal Accessed', 'September 2025 Batch');
             this.setupListeners();
         }, 1000); 
     },
