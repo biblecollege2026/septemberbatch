@@ -1,5 +1,4 @@
-const ActivityLogger = {
-    CONFIG: {
+CONFIG: {
         // REPLACE THE URL BELOW WITH YOUR NEW WEB APP URL
         SCRIPT_URL: 'https://script.google.com/macros/s/AKfycby7eXy51_62Lh_H_TkAYWSWyZ6pJaLJ7OoFNW2dofSQ9TtRi5UprElciBhNMIqafDrY/exec',
         IS_ADMIN: false
@@ -22,43 +21,42 @@ const ActivityLogger = {
         }, 1000); 
     },
 
-    ui: {
-        createAdminDashboard: function() {
-            const adminSecurity = document.getElementById('admin-security-section');
-            const adminStudents = document.getElementById('admin-students-toggle-div');
-            if (adminSecurity) adminSecurity.style.display = 'block';
-            if (adminStudents) adminStudents.style.display = 'block';
-        },
+ui: {
+    createAdminDashboard: function() {
+        const adminSecurity = document.getElementById('admin-security-section');
+        const adminStudents = document.getElementById('admin-students-toggle-div');
+        if (adminSecurity) adminSecurity.style.display = 'block';
+        if (adminStudents) adminStudents.style.display = 'block';
+    },
 
-        toggleStudents: function() {
-            console.log("Toggle button clicked!"); 
-            
-            const wrapper = document.getElementById('student-directory-wrapper');
-            const btn = document.getElementById('viewStudentsBtn');
+    toggleStudents: function() {
+        console.log("Toggle button clicked!"); // Check your browser console for this!
+        
+        const wrapper = document.getElementById('student-directory-wrapper');
+        const btn = document.getElementById('viewStudentsBtn');
 
-            if (!wrapper) {
-                console.error("Error: Could not find the element 'student-directory-wrapper'");
-                return;
-            }
+        if (!wrapper) {
+            console.error("Error: Could not find the element 'student-directory-wrapper'");
+            return;
+        }
 
-            if (wrapper.style.display === 'none' || wrapper.style.display === '') {
-                wrapper.style.display = 'block';
-                btn.innerHTML = '❌ CLOSE STUDENT DIRECTORY';
-                btn.style.backgroundColor = '#dc3545';
-                console.log("Directory opened");
-            } else {
-                wrapper.style.display = 'none';
-                btn.innerHTML = '👥 VIEW STUDENT DIRECTORY';
-                btn.style.backgroundColor = '#1e3c72';
-                console.log("Directory closed");
-            }
-        },
-
-        togglePanel: function() {
-            window.open('security-dashboard.html', '_blank');
+        if (wrapper.style.display === 'none' || wrapper.style.display === '') {
+            wrapper.style.display = 'block';
+            btn.innerHTML = '❌ CLOSE STUDENT DIRECTORY';
+            btn.style.backgroundColor = '#dc3545';
+            console.log("Directory opened");
+        } else {
+            wrapper.style.display = 'none';
+            btn.innerHTML = '👥 VIEW STUDENT DIRECTORY';
+            btn.style.backgroundColor = '#1e3c72';
+            console.log("Directory closed");
         }
     },
 
+    togglePanel: function() {
+        window.open('security-dashboard.html', '_blank');
+    }
+},
     logActivity: function(action, location) {
         const data = {
             email: window.studentEmail || 'Unknown',
@@ -74,45 +72,6 @@ const ActivityLogger = {
             mode: 'no-cors', 
             body: JSON.stringify(data)
         }).catch(err => console.error("Logging error:", err));
-    },
-
-    setupListeners: function() {
-        // 1. Track Print attempts
-        window.addEventListener('beforeprint', () => {
-            this.logActivity('Print Attempt', 'PDF Viewer');
-        });
-        
-        // 2. Track Right Clicks (Security Violation)
-        window.addEventListener('contextmenu', () => {
-            this.logActivity('Right Click Violation', 'Website Content');
-        });
-
-        // 3. Track All Clicks on the page (Profile, Marksheet, Specific PDFs)
-        window.addEventListener('click', (e) => {
-            const target = e.target;
-
-            // Track Profile Button
-            if (target.id === 'profile-btn' || target.closest('#profile-btn')) {
-                this.logActivity('Click Profile', 'Student Profile View');
-            }
-
-            // Track Specific PDF Panels
-            const pdfPanel = target.closest('.pdf-card'); 
-            if (pdfPanel) {
-                const pdfName = pdfPanel.querySelector('h3')?.innerText || 'Unknown PDF';
-                this.logActivity(`Opened PDF: ${pdfName}`, 'Dashboard');
-            }
-
-            // Track Marksheet Check
-            if (target.innerText.includes('Marksheet') || target.id === 'marksheet-btn') {
-                this.logActivity('Checked Marksheet', 'Student Portal');
-            }
-            
-            // Track Download Buttons
-            if (target.innerText.includes('Download') || target.classList.contains('download-btn')) {
-                this.logActivity('Download Attempt', 'File System');
-            }
-        });
     }
 };
 
