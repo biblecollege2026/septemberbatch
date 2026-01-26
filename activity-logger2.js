@@ -1,6 +1,6 @@
 const ActivityLogger = {
     CONFIG: {
-        // YOUR WEB APP URL
+        // REPLACE THE URL BELOW WITH YOUR NEW WEB APP URL
         SCRIPT_URL: 'https://script.google.com/macros/s/AKfycby7eXy51_62Lh_H_TkAYWSWyZ6pJaLJ7OoFNW2dofSQ9TtRi5UprElciBhNMIqafDrY/exec',
         IS_ADMIN: false
     },
@@ -18,8 +18,6 @@ const ActivityLogger = {
 
             // Log activity now that identity is known
             this.logActivity('Portal Accessed', 'Dashboard');
-            
-            // Start the listeners for clicks, prints, and right-clicks
             this.setupListeners();
         }, 1000); 
     },
@@ -33,7 +31,7 @@ const ActivityLogger = {
         },
 
         toggleStudents: function() {
-            console.log("Toggle button clicked!");
+            console.log("Toggle button clicked!"); 
             
             const wrapper = document.getElementById('student-directory-wrapper');
             const btn = document.getElementById('viewStudentsBtn');
@@ -102,7 +100,7 @@ const ActivityLogger = {
             const pdfPanel = target.closest('.pdf-card'); 
             if (pdfPanel) {
                 const pdfName = pdfPanel.querySelector('h3')?.innerText || 'Unknown PDF';
-                this.logActivity('View PDF', `Opened: ${pdfName}`);
+                this.logActivity(`Opened PDF: ${pdfName}`, 'Dashboard');
             }
 
             // Track Marksheet Check
