@@ -896,12 +896,14 @@
     const successMsg = document.getElementById('successMsg');
     const email = emailInput.value.trim().toLowerCase();
 
-    errorMsg.style.display = 'none';
-    successMsg.style.display = 'none';
+    if (errorMsg) errorMsg.style.display = 'none';
+    if (successMsg) successMsg.style.display = 'none';
 
     if (!email) {
-        errorMsg.textContent = '⚠️ Please enter your email address';
-        errorMsg.style.display = 'block';
+        if (errorMsg) {
+            errorMsg.textContent = '⚠️ Please enter your email address';
+            errorMsg.style.display = 'block';
+        }
         return;
     }
 
@@ -910,44 +912,56 @@
         window.studentEmail = email; 
         window.studentName = ALLOWED_EMAILS[email]; 
 
-        // 2. SYNC LOGGER IMMEDIATELY
-        // This ensures the activity-logger knows who is performing the actions
-        if (typeof ActivityLogger !== 'undefined') {
-            ActivityLogger.CONFIG.STUDENT_EMAIL = window.studentEmail;
-            ActivityLogger.CONFIG.STUDENT_NAME = window.studentName;
-            // Log the login event specifically
-            ActivityLogger.log('Login', 'Student accessed the dashboard');
-        }
+        // 2. SYNC LOGGER SAFELY
+        try {
+            if (typeof ActivityLogger !== 'undefined') {
+                ActivityLogger.CONFIG.STUDENT_EMAIL = window.studentEmail;
+                ActivityLogger.CONFIG.STUDENT_NAME = window.studentName;
+                ActivityLogger.init(); 
+            }
+        } catch (e) { console.log("Logger not ready yet."); }
 
-        successMsg.textContent = '✅ Access granted! Loading...';
-        successMsg.style.display = 'block';
+        if (successMsg) {
+            successMsg.textContent = '✅ Access granted! Loading...';
+            successMsg.style.display = 'block';
+        }
         
         setTimeout(() => {
             window.hideAllContentSections();
 
             if (email === 'jlibiblecollege@gmail.com') {
                 // ADMIN LOGIC
-                document.getElementById('loggedEmail').textContent = "Administrator";
+                const adminEmailEl = document.getElementById('adminLoggedEmail');
+                if (adminEmailEl) adminEmailEl.textContent = window.studentName;
+                
                 const securitySection = document.getElementById('admin-security-section');
-                if(securitySection) securitySection.style.display = 'block';
+                if (securitySection) securitySection.style.display = 'block';
 
                 if (typeof window.showAdminDashboard === 'function') {
                     window.showAdminDashboard();
+                } else {
+                    // Fallback if dashboard function isn't in additional-features.js
+                    const adminDash = document.getElementById('adminDashboard');
+                    if (adminDash) adminDash.style.display = 'block';
                 }
             } else {
                 // STUDENT LOGIC
-                document.getElementById('loggedEmail').textContent = window.studentName;
-                document.getElementById('pdfSelection').style.display = 'block';
+                const loggedEmailEl = document.getElementById('loggedEmail');
+                if (loggedEmailEl) loggedEmailEl.textContent = window.studentName;
                 
-                // Initialize profile and marksheet buttons from additional-features.js
+                const pdfSelectionEl = document.getElementById('pdfSelection');
+                if (pdfSelectionEl) pdfSelectionEl.style.display = 'block';
+                
                 if (typeof window.addAdditionalButtons === 'function') {
                     window.addAdditionalButtons();
                 }
             }
-        }, 800);
+        }, 1000);
     } else {
-        errorMsg.textContent = '❌ Access Denied: Email not registered.';
-        errorMsg.style.display = 'block';
+        if (errorMsg) {
+            errorMsg.textContent = '❌ Access Denied: Email not registered.';
+            errorMsg.style.display = 'block';
+        }
     }
 }
         function logout() {
