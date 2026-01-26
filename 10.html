@@ -757,20 +757,21 @@
         </div>
 
         <!-- NEW ADMIN DASHBOARD SECTION -->
-        <div id="adminDashboard" class="admin-dashboard">
-            <div class="admin-header">
-                <div style="font-size: 3em; margin-bottom: 10px;">👑</div>
-                <h2>Admin Dashboard</h2>
-                <p>Welcome, <span id="adminLoggedEmail"></span>! Manage student records here.</p>
-            </div>
-            <div class="admin-controls">
-                <button class="logout-btn" onclick="logout()">Logout</button>
-            </div>
-            <h3 class="selection-title" style="margin-bottom: 20px;">All Students</h3>
-            <div id="studentList" class="student-list">
-                <!-- Student cards will be populated here by JavaScript -->
-            </div>
-        </div>
+<div id="admin-security-section" style="display:none; text-align:center; margin: 20px 0; padding: 20px; background: #f0f4f8; border-radius: 10px;">
+    <h4 style="color: #1e3c72; margin-bottom: 15px;">🛡️ Security Command Center</h4>
+    <div style="display: flex; justify-content: center; gap: 15px;">
+        <button id="viewStudentsBtn" onclick="ActivityLogger.ui.toggleStudents()" style="width:auto; background:#1e3c72;">
+            👥 View Online Students
+        </button>
+        <button onclick="ActivityLogger.ui.togglePanel()" style="width:auto; background:#28a745;">
+            📊 Full Security Dashboard
+        </button>
+    </div>
+</div>
+
+<div id="student-directory-wrapper" style="display:none; margin: 20px auto; max-width: 800px;">
+    <div id="admin-students-toggle-div"></div>
+</div>
         <!-- END NEW ADMIN DASHBOARD SECTION -->
 
     </div>
