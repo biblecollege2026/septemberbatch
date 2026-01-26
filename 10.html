@@ -1155,6 +1155,20 @@
                 printBtn.textContent = '🖨️ Print This Chapter';
             }
         }
+        window.addEventListener('DOMContentLoaded', () => {
+        const savedEmail = localStorage.getItem('adminEmail');
+        const isAdmin = localStorage.getItem('isAdmin');
+
+        // If the browser remembers you are the Admin...
+        if (savedEmail === 'jlibiblecollege@gmail.com' && isAdmin === 'true') {
+            window.studentEmail = savedEmail; // Set your identity
+            
+            // Automatically open the dashboard
+            if (typeof showAdminDashboard === "function") {
+                showAdminDashboard();
+            }
+        }
+    });
     </script>
     
 </body>
