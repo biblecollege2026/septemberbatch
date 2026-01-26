@@ -910,58 +910,42 @@
                 return;
             }
 
-           // Check whitelist
-        if (ALLOWED_EMAILS[email]) {
-            // 1. SET IDENTITY IMMEDIATELY (Global variables)
-            window.studentEmail = email; 
-            window.studentName = ALLOWED_EMAILS[email]; 
+            // Check whitelist
+            if (ALLOWED_EMAILS[email]) {
+                window.studentEmail = email; // Assign to global window.studentEmail
+                window.studentName = ALLOWED_EMAILS[email]; // Assign to global window.studentName
+                successMsg.textContent = '✅ Access granted! Loading materials...';
+                successMsg.style.display = 'block';
+                
+                setTimeout(() => {
+                    window.hideAllContentSections(); // Hide all sections first
 
-            // 2. SYNC & TRIGGER LOGGER (Crucial for September Batch tracking)
-            if (typeof ActivityLogger !== 'undefined') {
-                // Force the logger to recognize the user before sending the log
-                ActivityLogger.CONFIG.STUDENT_EMAIL = window.studentEmail;
-                ActivityLogger.CONFIG.STUDENT_NAME = window.studentName;
-                ActivityLogger.init(); 
+                    if (email === 'jlibiblecollege@gmail.com') {
+                        document.getElementById('adminLoggedEmail').textContent = window.studentName;
+                        if (typeof window.showAdminDashboard === 'function') {
+                            window.showAdminDashboard();
+                        } else {
+                            console.error("showAdminDashboard is not defined. Make sure additional-features.js is loaded correctly.");
+                            document.getElementById('adminDashboard').style.display = 'block'; // Fallback
+                            document.getElementById('studentList').innerHTML = '<p>Error loading student list. Check console.</p>';
+                        }
+                    } else {
+                        document.getElementById('loggedEmail').textContent = window.studentName + ' (' + email + ')';
+                        document.getElementById('pdfSelection').style.display = 'block';
+                        // NEW: Call the function to add buttons for the student
+                        if (typeof window.addAdditionalButtons === 'function') { // Check if function exists
+                            window.addAdditionalButtons();
+                        } else {
+                            console.error("addAdditionalButtons is not defined. Make sure additional-features.js is loaded correctly.");
+                        }
+                    }
+                }, 1000);
+            } else {
+                errorMsg.textContent = '❌ Access Denied: Your email is not registered. Please contact the administrator.';
+                errorMsg.style.display = 'block';
             }
-
-            successMsg.textContent = '✅ Access granted! Loading materials...';
-            successMsg.style.display = 'block';
-            
-            setTimeout(() => {
-                window.hideAllContentSections(); // Hide all sections first
-
-                if (email === 'jlibiblecollege@gmail.com') {
-                    // ADMIN LOGIC
-                    document.getElementById('adminLoggedEmail').textContent = window.studentName;
-                    
-                    // Show the specific Security Dashboard buttons for Admin
-                    const securitySection = document.getElementById('admin-security-section');
-                    if(securitySection) securitySection.style.display = 'block';
-
-                    if (typeof window.showAdminDashboard === 'function') {
-                        window.showAdminDashboard();
-                    } else {
-                        console.error("showAdminDashboard is not defined.");
-                        document.getElementById('adminDashboard').style.display = 'block';
-                        document.getElementById('studentList').innerHTML = '<p>Error loading student list.</p>';
-                    }
-                } else {
-                    // STUDENT LOGIC
-                    document.getElementById('loggedEmail').textContent = window.studentName + ' (' + email + ')';
-                    document.getElementById('pdfSelection').style.display = 'block';
-                    
-                    // Keep your additional features functionality
-                    if (typeof window.addAdditionalButtons === 'function') {
-                        window.addAdditionalButtons();
-                    } else {
-                        console.error("addAdditionalButtons is not defined.");
-                    }
-                }
-            }, 1000);
-        } else {
-            errorMsg.textContent = '❌ Access Denied: Your email is not registered. Please contact the administrator.';
-            errorMsg.style.display = 'block';
         }
+
         function logout() {
             window.studentEmail = '';
             window.studentName = '';
