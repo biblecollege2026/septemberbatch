@@ -5,6 +5,7 @@ const STUDENT_DATA = {
     // Academic Performance Data
     marks: {
        'hiwalefrancis@gmail.com': 'HIWALE FRANCIS TATYABA',
+        'hiwalefrancis@gmail.com': { name: 'Francis hiwali', marks: [90, 100, 97, 100, 100, 100, 93], offlineMark: 91 },
             'varshabhore55@gmail.com': 'Varsha ram bhore',
             'jadhavsushma05@gmail.com': 'Sushma Jadhav',
             'shwetadalge14@gmail.com': 'Shweta Shirish dalge',
