@@ -5,12 +5,12 @@ const STUDENT_DATA = {
     // Academic Performance Data
     marks: {
        'hiwalefrancis@gmail.com': 'HIWALE FRANCIS TATYABA',
-        'hiwalefrancis@gmail.com': { name: 'Francis hiwali', marks: [90, 100, 97, 100, 100, 100, 93], offlineMark: 91 },
-            'varshabhore55@gmail.com': 'Varsha ram bhore',
-            'jadhavsushma05@gmail.com': 'Sushma Jadhav',
-            'shwetadalge14@gmail.com': 'Shweta Shirish dalge',
-            'jlibiblecollege@gmail.com': 'Bible College Admin',
-            'sagarware12@gmail.com': 'Sagar ware',
+        'hiwalefrancis@gmail.com': { name: 'Francis hiwali', marks: [95, 100, 95, , 100, 100, ], offlineMark:  },
+            'varshabhore55@gmail.com': { 'Varsha ram bhore', marks: [59, ,, , , , ], offlineMark:  },
+            'jadhavsushma05@gmail.com': { 'Sushma Jadhav', marks: [55, 40, 62, , 55, 57, ], offlineMark:  },
+            'shwetadalge14@gmail.com':{ 'Shweta Shirish dalge', marks: [94, 53, 92, 70, 75, 57, 93], offlineMark:  },
+            'jlibiblecollege@gmail.com': 'Bible College Admin', ,
+            'sagarware12@gmail.com': { 'Sagar ware', marks: [0, 72, , , , , ], offlineMark:  },
     },
 
     // Student Profile Information
