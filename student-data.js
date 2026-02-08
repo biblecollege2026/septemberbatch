@@ -120,5 +120,5 @@ const STUDENT_DATA = {
     },
 
     // Exam months mapping (updated to include offline)
-    examMonths: ['June', 'July', 'August', 'September', 'October', 'Nov-1', 'Nov-2', 'Offline Exam']
+    examMonths: ['SEPTEMBER 2025', 'OCTOBER 2025', 'NOVEMBER 2025', 'DECEMBER 2025', 'JANUARY 2026', 'FEBRUARY ', 'MARCH', 'OFFLINE EXAM MARCH 2026']
 };
