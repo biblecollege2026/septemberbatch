@@ -301,7 +301,7 @@
         document.getElementById('marksheet-student-name').textContent = studentProfileData.name;
         document.getElementById('marksheet-student-email-display').textContent = email; // Display email
         document.getElementById('final-total-score').textContent = finalPercentage !== 'N/A' ? finalPercentage.toFixed(0) : 'N/A'; // Display final score rounded
-        document.getElementById('online-exams-taken').textContent = `$${onlineExamsTaken}/$${onlineMarks.length}`;
+        document.getElementById('online-exams-taken').textContent = `${onlineExamsTaken}/${onlineMarks.length}`;
         document.getElementById('online-average-score').textContent = !isNaN(monthlyAveragePercentage) ? monthlyAveragePercentage.toFixed(2) : 'N/A';
         document.getElementById('final-percentage-score').textContent = finalPercentage !== 'N/A' ? finalPercentage + '%' : 'N/A';
         document.getElementById('final-grade-display').textContent = finalGrade;
@@ -342,10 +342,10 @@
 
             row.innerHTML = `
                 <td style="padding: 15px; font-weight: 600;">${examMonth}</td>
-                <td style="padding: 15px; text-align: center; color: $${markColor}; font-weight: 700; font-size: 1.1em;">$${markValue}</td>
+                <td style="padding: 15px; text-align: center; color: ${markColor}; font-weight: 700; font-size: 1.1em;">${markValue}</td>
                 <td style="padding: 15px; text-align: center;">${outOf}</td>
                 <td style="padding: 15px; text-align: center; font-weight: 600;">${examPercentage}</td>
-                <td style="padding: 15px; text-align: center; font-weight: 600; color: $${markColor};">$${status}</td>
+                <td style="padding: 15px; text-align: center; font-weight: 600; color: ${markColor};">${status}</td>
             `;
             tableBody.appendChild(row);
         });
