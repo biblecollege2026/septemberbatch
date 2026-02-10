@@ -402,7 +402,7 @@
         else if (percentage >= 70) return 'B+';
         else if (percentage >= 60) return 'B';
         else if (percentage >= 50) return 'C';
-        else return 'Needs Improvement';
+        else return 'F';
     }
 
     // Get Status based on marks (used for both online and calculated rows)
@@ -411,7 +411,7 @@
         if (mark >= 90) return 'Excellent';
         if (mark >= 80) return 'Good';
         if (mark >= 70) return 'Average';
-        return 'Needs Improvement';
+        return 'F';
     }
 
     /**
