@@ -201,9 +201,9 @@
                     box-shadow: 0 3px 10px rgba(0,0,0,0.1);
                     border-left: 5px solid #ff9800;
                 ">
-                    div style="color: #666; font-size: 0.85em; margin-bottom: 8px; text-transform: uppercase; font-weight: 600;">ONLINE AVERAGE</div>
+                    <div style="color: #666; font-size: 0.85em; margin-bottom: 8px; text-transform: uppercase; font-weight: 600;">ONLINE AVERAGE</div>
                   <div id="online-average-score" style="color: #ff9800; font-size: 2.5em; font-weight: 700;">0</div>
-                <div>
+                </div>
 
                 <div class="summary-card" style="
                     background: white;
