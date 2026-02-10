@@ -7,6 +7,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <style>
         /* Existing CSS styles remain unchanged */
+        /* Update your CSS in marksview.html */
+#final-grade-display, 
+.summary-card div[id*="score"], 
+.summary-card div[id*="grade"] {
+    font-size: 1.5rem !important; /* Reduces size to fit the box */
+    word-wrap: break-word;        /* Breaks long words */
+    overflow-wrap: break-word;
+    white-space: normal;          /* Allows text to wrap to a second line */
+    display: block;
+    line-height: 1.2;
+}
+
+.summary-card {
+    min-height: 140px;            /* Ensures the card can hold two lines of text */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
         * {
             margin: 0;
             padding: 0;
