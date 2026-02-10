@@ -382,12 +382,20 @@
         tableBody.appendChild(finalRow);
 
         // Ranking logic
-        const allScores = Object.keys(STUDENT_DATA.marks).map(e => {
-            const m = STUDENT_DATA.marks[e];
-            const avg = (m.marks.reduce((a, b) => (typeof b === 'number' ? a + b : a), 0) / 700) * 100;
-            const off = (typeof m.offlineMark === 'number') ? m.offlineMark : 0;
-            return parseFloat(((avg * 0.20) + (off * 0.80)).toFixed(2));
-        }).sort((a, b) => b - a);
+        const allScores = Object.keys(STUDENT_DATA.marks)
+    .map(e => {
+        const m = STUDENT_DATA.marks[e];
+        // Use optional chaining to prevent the 'reduce' error
+        const marksArray = m?.marks ?? []; 
+        const avg = (marksArray.reduce((a, b) => (typeof b === 'number' ? a + b : a), 0) / 700) * 100;
+        const off = (typeof m.offlineMark === 'number') ? m.offlineMark : 0;
+        return {
+            name: m.name || e,
+            score: parseFloat(((avg * 0.20) + (off * 0.80)).toFixed(2))
+        };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 1); // <--- CHANGE THIS TO 1 to only keep the 1st rank
 
         const rank = allScores.indexOf(finalPer) + 1;
         const rankContainer = document.getElementById('rank-badge-container');
