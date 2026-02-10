@@ -302,7 +302,7 @@
         document.getElementById('marksheet-student-email-display').textContent = email; // Display email
         document.getElementById('final-total-score').textContent = finalPercentage !== 'N/A' ? finalPercentage.toFixed(0) : 'N/A'; // Display final score rounded
         document.getElementById('online-exams-taken').textContent = `${onlineExamsTaken}/${onlineMarks.length}`;
-        document.getElementById('online-average-score').textContent = !isNaN(monthlyAveragePercentage) ? monthlyAveragePercentage.toFixed(2) : 'N/A';
+  //      document.getElementById('online-average-score').textContent = !isNaN(monthlyAveragePercentage) ? monthlyAveragePercentage.toFixed(2) : 'N/A';
         document.getElementById('final-percentage-score').textContent = finalPercentage !== 'N/A' ? finalPercentage + '%' : 'N/A';
         document.getElementById('final-grade-display').textContent = finalGrade;
 
